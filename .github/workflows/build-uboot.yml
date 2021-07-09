@@ -10,7 +10,7 @@ jobs:
         name: checkout src
         id: checkout
       - name: Set Version
-        run: echo 'UBOOT_VER=v2021.04' >> $GITHUB_ENV
+        run: echo 'UBOOT_VER=v2021.07' >> $GITHUB_ENV
       - name: Compile U-Boot
         id: compile
         run: |
