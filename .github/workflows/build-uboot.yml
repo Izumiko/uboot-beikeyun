@@ -18,19 +18,12 @@ jobs:
             wget "https://developer.arm.com/-/media/Files/downloads/gnu-a/10.2-2020.11/binrel/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu.tar.xz"
             tar xf gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu.tar.xz
             export PATH=`pwd`/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu/bin:$PATH
-            git clone --depth=1 https://github.com/ARM-software/arm-trusted-firmware.git
             wget -O uboot.tar.gz "https://github.com/u-boot/u-boot/archive/refs/tags/${{ env.UBOOT_VER }}.tar.gz"
             git clone --depth=1 https://github.com/rockchip-linux/rkbin.git
             tar xzf uboot.tar.gz
             mv u-boot-* u-boot
             mkdir miniloader tpl-spl
-            #export BL31=`pwd`/arm-trusted-firmware/build/rk3328/release/bl31/bl31.elf
-            echo "Building ATF"
-            cd arm-trusted-firmware
-            make distclean
-            CROSS_COMPILE=aarch64-none-linux-gnu- make PLAT=rk3328 all
-            cd ..
-            cp arm-trusted-firmware/build/rk3328/release/bl31/bl31.elf u-boot/bl31.elf || cp rkbin/bin/rk33/rk322xh_bl31_v1.46.elf u-boot/bl31.elf
+            cp rkbin/bin/rk33/rk322xh_bl31_v1.46.elf u-boot/bl31.elf
             echo "Building u-boot"
             cd u-boot
             patch -p1 < ../beikeyun.patch
@@ -42,11 +35,12 @@ jobs:
             cd ../rkbin
             tools/mkimage -n rk3328 -T rksd -d bin/rk33/rk3328_ddr_333MHz_v1.17.bin idbloader.img
             cat bin/rk33/rk322xh_miniloader_v2.50.bin >> idbloader.img
-            tools/trust_merger RKTRUST/RK3328TRUST.ini
+            tools/trust_merger ../rk3328trust.ini
             tools/loaderimage --pack --uboot u-boot.bin uboot.img 0x00200000
-            mv idbloader.img uboot.img trust.img ../miniloader/
+            tools/boot_merger pack RKBOOT/RK3328MINIALL.ini
+            mv idbloader.img uboot.img trust.img rk3328_loader_v1.17.250.bin ../miniloader/
             cd ../miniloader
-            tar czf "../uboot-${{ env.UBOOT_VER }}-miniloader.tar.gz" idbloader.img uboot.img trust.img
+            tar czf "../uboot-${{ env.UBOOT_VER }}-miniloader.tar.gz" idbloader.img uboot.img trust.img rk3328_loader_v1.17.250.bin
             cd ../tpl-spl
             tar czf "../uboot-${{ env.UBOOT_VER }}-spl.tar.gz" idbloader.img u-boot.itb
 
