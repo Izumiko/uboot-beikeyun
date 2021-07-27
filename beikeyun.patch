@@ -775,6 +775,7 @@ diff -Naur --no-dereference u-boot-2021.04/configs/beikeyun-rk3328_defconfig u-b
 +# CONFIG_CMD_SETEXPR is not set
 +CONFIG_CMD_TIME=y
 +CONFIG_CMD_BTRFS=y
++CONFIG_CMD_EXT4_WRITE=y
 +CONFIG_SPL_OF_CONTROL=y
 +CONFIG_TPL_OF_CONTROL=y
 +CONFIG_OF_SPL_REMOVE_PROPS="clock-names interrupt-parent assigned-clocks assigned-clock-rates assigned-clock-parents"
