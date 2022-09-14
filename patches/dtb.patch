@@ -1,0 +1,11 @@
+diff -Naur --no-dereference u-boot-2021.04/arch/arm/dts/Makefile u-boot-2021.04-new/arch/arm/dts/Makefile
+--- u-boot-2021.04/arch/arm/dts/Makefile	2021-04-05 23:03:29.000000000 +0800
++++ u-boot-2021.04-new/arch/arm/dts/Makefile	2021-06-24 16:57:33.196307300 +0800
+@@ -111,6 +111,7 @@
+ 	rk3328-nanopi-r2s.dtb \
+ 	rk3328-roc-cc.dtb \
+ 	rk3328-rock64.dtb \
++	rk3328-beikeyun.dtb \
+ 	rk3328-rock-pi-e.dtb
+ 
+ dtb-$(CONFIG_ROCKCHIP_RK3368) += \
